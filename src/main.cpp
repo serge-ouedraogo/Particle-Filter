@@ -46,7 +46,7 @@ int main() {
 
   // Create particle filter
   ParticleFilter pf;
-
+  std::cout << "CREATING PARTICLE FILTER" <<std::endl; 
   h.onMessage([&pf,&map,&delta_t,&sensor_range,&sigma_pos,&sigma_landmark]
               (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                uWS::OpCode opCode) {
@@ -62,6 +62,7 @@ int main() {
         string event = j[0].get<string>();
         
         if (event == "telemetry") {
+  
           // j[1] is the data JSON object
           if (!pf.initialized()) {
             // Sense noisy position data from the simulator
@@ -69,8 +70,11 @@ int main() {
             double sense_y = std::stod(j[1]["sense_y"].get<string>());
             double sense_theta = std::stod(j[1]["sense_theta"].get<string>());
 
+            
             pf.init(sense_x, sense_y, sense_theta, sigma_pos);
-          } else {
+            
+          } 
+          else {
             // Predict the vehicle's next state from previous 
             //   (noiseless control) data.
             double previous_velocity = std::stod(j[1]["previous_velocity"].get<string>());
